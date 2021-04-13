@@ -11,14 +11,39 @@ import "./Main.css";
 export default class Main extends Component {
   state = {
     novaTarefa: "",
-    tarefas: ["Fazer café", "Beber água", "Estudar", "Arrumar quarto"],
+    tarefas: [],
   };
 
-  inputMudou = (e) => {
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const { tarafas } = this.state;
+    let { novaTarefa } = this.state;
+    novaTarefa = novaTarefa.Trim();
+
+    if(tarefas.indexOf(novaTarefa) !== -1) return;
+
+    const novasTarefas = [...tarefas];
+
+    this.setState ({
+      tarefas: [...novasTarefas, novaTarefa],
+    });
+  };
+
+  handleChange = (e) => {
     this.setState({
       novaTarefa: e.target.value,
     });
-  };
+  }
+
+  handleEdit = (e) => {
+    console.log('Edit',);
+
+  }
+
+  handleDelete = (e,index) => {
+
+  }
 
   render() {
     const { novaTarefa, tarefas } = this.state;
@@ -27,7 +52,7 @@ export default class Main extends Component {
       <div className="main">
         <h1>Lista de tarefas:</h1>
 
-        <form action="#" className="form">
+        <form onSubmit={this.handleSubmit} action="#" className="form">
           <input onChange={this.handleChange} type="text" value={novaTarefa} />
           <button type="submit">
             <FaPlus />
@@ -38,10 +63,14 @@ export default class Main extends Component {
           {tarefas.map((tarefa) => (
             <li key={tarefa}>
               {tarefa}
-              <div>
-                <FaEdit class='edit' />
-                <FaWindowClose class='delete'/>
-              </div>
+              <span>
+                <FaEdit
+                class='edit'
+                />
+                <FaWindowClose
+                onClick={this.handleDelete}
+                class='delete'/>
+              </span>
               </li>
           ))}
         </ul>
